@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Essentials;
 
 public enum FoodState { Starving, Very_Hungry, Hungry, Peckish, Fine, Full, Stuffed };
 public enum DrinkState { Dehydrated, Very_Thirsty, Thirsty, Fine, Slaked };

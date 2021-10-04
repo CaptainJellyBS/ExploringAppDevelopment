@@ -4,9 +4,19 @@
              x:Class="TamaMossy.Views.StatPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Wow this changes!"
-                VerticalOptions="CenterAndExpand" 
+            <Label x:Name="foodText" Text="{Binding food}"
+                VerticalOptions="Center" 
                 HorizontalOptions="CenterAndExpand" />
+
+            <Button Text="Click to increase Food!"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Clicked="OnFoodIncreaseClicked" />
+
+            <Button Text="Click to decrease Food!"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Clicked="OnFoodDecreaseClicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

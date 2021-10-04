@@ -11,8 +11,10 @@ namespace TamaMossy.Views
     {
         string filename = "current_state.txt";
         public CurrentState curState;
+        public string food { get; set; }
         public StatPage()
         {
+            BindingContext = this;
             InitializeComponent();            
         }
 
@@ -23,13 +25,37 @@ namespace TamaMossy.Views
             if (File.Exists(Path.Combine(App.FolderPath, filename)))
             {
                 curState = CurrentState.ParseFromString(File.ReadAllText(Path.Combine(App.FolderPath, filename)));
-                //Load stats here
+                food = curState.currentFoodState.ToString().Replace('_', ' ');
+                foodText.Text = food;
+
+                Console.WriteLine(food);
             }
             else
             {
                 curState = new CurrentState();
-                File.WriteAllText(Path.Combine(App.FolderPath, filename), curState.ParseToString());
+                SaveState();
             }
+        }
+        
+        void OnFoodIncreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentFoodState = (FoodState)Math.Min((int)curState.currentFoodState + 1, (int)FoodState.Stuffed);
+            SaveState();
+            food = curState.currentFoodState.ToString().Replace('_', ' ');
+            foodText.Text = food;
+        }
+
+        void OnFoodDecreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentFoodState = (FoodState)Math.Max((int)curState.currentFoodState - 1, (int)FoodState.Starving);
+            SaveState();
+            food = curState.currentFoodState.ToString().Replace('_', ' ');
+            foodText.Text = food;
+        }
+
+        void SaveState()
+        {
+            File.WriteAllText(Path.Combine(App.FolderPath, filename), curState.ParseToString());
         }
     }
 }
