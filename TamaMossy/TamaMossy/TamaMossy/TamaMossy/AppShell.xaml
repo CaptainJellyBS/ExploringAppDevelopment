@@ -12,8 +12,8 @@
     -->
     <!-- Display a bottom tab bar containing two tabs -->
     <TabBar>
-        <ShellContent Title="Stats"
+        <ShellContent Title="Home"
                       Icon="icon_feed.png"
-                      ContentTemplate="{DataTemplate views:StatPage}" />
+                      ContentTemplate="{DataTemplate views:BasePage}" />
     </TabBar>
 </Shell>

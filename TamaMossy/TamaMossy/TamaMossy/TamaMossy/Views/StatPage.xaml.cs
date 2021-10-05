@@ -12,6 +12,10 @@ namespace TamaMossy.Views
         string filename = "current_state.txt";
         public CurrentState curState;
         public string food { get; set; }
+        public string drink { get; set; }
+        public string energy { get; set; }
+        public string social { get; set; }
+        public string bored { get; set; }
         public StatPage()
         {
             BindingContext = this;
@@ -26,9 +30,15 @@ namespace TamaMossy.Views
             {
                 curState = CurrentState.ParseFromString(File.ReadAllText(Path.Combine(App.FolderPath, filename)));
                 food = curState.currentFoodState.ToString().Replace('_', ' ');
-                foodText.Text = food;
-
-                Console.WriteLine(food);
+                foodText.Text = food; 
+                drink = curState.currentDrinkState.ToString().Replace('_', ' ');
+                drinkText.Text = drink;
+                energy = curState.currentEnergyState.ToString().Replace('_', ' ');
+                energyText.Text = energy;
+                social = curState.currentSocialState.ToString().Replace('_', ' ');
+                socialText.Text = social;
+                bored = curState.currentBoredState.ToString().Replace('_', ' ');
+                boredText.Text = bored;
             }
             else
             {
@@ -51,6 +61,70 @@ namespace TamaMossy.Views
             SaveState();
             food = curState.currentFoodState.ToString().Replace('_', ' ');
             foodText.Text = food;
+        }
+        
+        void OnDrinkIncreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentDrinkState = (DrinkState)Math.Min((int)curState.currentDrinkState + 1, (int)DrinkState.Slaked);
+            SaveState();
+            drink = curState.currentDrinkState.ToString().Replace('_', ' ');
+            drinkText.Text = drink;
+        }
+
+        void OnDrinkDecreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentDrinkState = (DrinkState)Math.Max((int)curState.currentDrinkState - 1, (int)DrinkState.Dehydrated);
+            SaveState();
+            drink = curState.currentDrinkState.ToString().Replace('_', ' ');
+            drinkText.Text = drink;
+        } 
+        
+        void OnEnergyIncreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentEnergyState = (EnergyState)Math.Min((int)curState.currentEnergyState + 1, (int)EnergyState.Energized);
+            SaveState();
+            energy = curState.currentEnergyState.ToString().Replace('_', ' ');
+            energyText.Text = energy;
+        }
+
+        void OnEnergyDecreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentEnergyState = (EnergyState)Math.Max((int)curState.currentEnergyState - 1, (int)EnergyState.Exhausted);
+            SaveState();
+            energy = curState.currentEnergyState.ToString().Replace('_', ' ');
+            energyText.Text = energy;
+        }
+        
+        void OnSocialIncreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentSocialState = (SocialState)Math.Min((int)curState.currentSocialState + 1, (int)SocialState.Panicking);
+            SaveState();
+            social = curState.currentSocialState.ToString().Replace('_', ' ');
+            socialText.Text = social;
+        }
+
+        void OnSocialDecreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentSocialState = (SocialState)Math.Max((int)curState.currentSocialState - 1, (int)SocialState.Forlorn);
+            SaveState();
+            social = curState.currentSocialState.ToString().Replace('_', ' ');
+            socialText.Text = social;
+        }
+
+        void OnBoredIncreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentBoredState = (BoredState)Math.Min((int)curState.currentBoredState + 1, (int)BoredState.Satisfied);
+            SaveState();
+            bored = curState.currentBoredState.ToString().Replace('_', ' ');
+            boredText.Text = bored;
+        }
+
+        void OnBoredDecreaseClicked(object sender, EventArgs args)
+        {
+            curState.currentBoredState = (BoredState)Math.Max((int)curState.currentBoredState - 1, (int)BoredState.Bored);
+            SaveState();
+            bored = curState.currentBoredState.ToString().Replace('_', ' ');
+            boredText.Text = bored;
         }
 
         void SaveState()
