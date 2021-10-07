@@ -19,6 +19,8 @@ namespace TamaMossy.Models
     {
         public bool isAsleep;
         public int idleAnimation;
+        public int databaseID;
+        public string name, ownerName;
 
         #region ugly state enum getter setter headache
         FoodState currentFoodState;
@@ -75,7 +77,7 @@ namespace TamaMossy.Models
                 result.CurrentBoredState = (BoredState)Int32.Parse(inputs[4]);
                 result.isAsleep = Int32.Parse(inputs[5]) == 1;
                 result.GenerateNewIdleAnimation();
-                return result;
+                return result; 
             }
             catch
             {

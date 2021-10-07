@@ -82,8 +82,6 @@ namespace TamaMossy.Models
                 return "bored_anim_large.gif";
             }
 
-            //Random r = new Random();
-            //return "idle_anim_" + r.Next(0, 11) + "_large.gif";
             return "idle_anim_" + App.CurState.idleAnimation + "_large.gif";
 
         }
