@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Timers;
 using TamaMossy.Models;
 using Xamarin.Forms;
 
@@ -10,6 +11,8 @@ namespace TamaMossy
         static string filename = "current_state.txt";
         public static string FolderPath { get; private set; }
         public static CurrentState CurState {get; private set;}
+        public AlarmManager alarmManager;
+        Timer timer;
 
         public App()
         {
@@ -21,14 +24,30 @@ namespace TamaMossy
 
         protected override void OnStart()
         {
+            alarmManager = AlarmManager.LoadAlarms();
+            timer = new Timer { AutoReset = true, Interval = 1000 * 60 };
+            timer.Elapsed += TimerElapsed;
+            timer.Start();
         }
+
 
         protected override void OnSleep()
         {
+            timer.Stop();
         }
 
         protected override void OnResume()
         {
+            alarmManager = AlarmManager.LoadAlarms();
+
+            timer = new Timer { AutoReset = true, Interval = 1000 * 60 };
+            timer.Elapsed += TimerElapsed;
+            timer.Start();
+        }
+
+        void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            alarmManager.UpdateTimers();
         }
 
         public static void LoadState()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
@@ -17,10 +18,9 @@ namespace TamaMossy.Models
 {
     public class CurrentState
     {
-        public bool isAsleep;
+        public bool isAsleep, isInPark;
         public int idleAnimation;
-        public int databaseID;
-        public string name, ownerName;
+        public string name;
 
         #region ugly state enum getter setter headache
         FoodState currentFoodState;
@@ -95,7 +95,6 @@ namespace TamaMossy.Models
             result += (int)CurrentSocialState; result += " ";
             result += (int)CurrentEnergyState; result += " ";
             result += (int)CurrentBoredState; result += " ";
-
             int t = 0;
             if (isAsleep) { t = 1; }
             result += t; result += " ";
@@ -107,6 +106,35 @@ namespace TamaMossy.Models
         {
             Random r = new Random();
             idleAnimation = r.Next(0, 11);
+        }
+
+        public CreatureData ToCreatureData()
+        {
+            return new CreatureData()
+            {
+                ID = Preferences.Get("ID", 0),
+                PlayerName = Preferences.Get("PlayerName", "PLACEHOLDER"),
+                Name = name,
+                Hunger = Utility.FoodToFloat(CurrentFoodState),
+                Thirst = Utility.DrinkToFloat(CurrentDrinkState),
+                Stimulated = Utility.SocialToFloat(CurrentSocialState),
+                Loneliness = 1 - Utility.SocialToFloat(CurrentSocialState),
+                Tired = Utility.EnergyToFloat(CurrentEnergyState),
+                Boredom = Utility.BoredToFloat(CurrentBoredState)
+            };
+        }
+
+        public static CurrentState FromCreatureData(CreatureData data)
+        { 
+            return new CurrentState()
+            {
+                name = data.Name,
+                CurrentFoodState = Utility.FoodFromFloat(data.Hunger),
+                CurrentDrinkState = Utility.DrinkFromFloat(data.Thirst),
+                CurrentSocialState = Utility.SocialFromFloat(data.Stimulated),
+                CurrentEnergyState = Utility.EnergyFromFloat(data.Tired),
+                CurrentBoredState = Utility.BoredFromFloat(data.Boredom)
+            };
         }
     }
 }

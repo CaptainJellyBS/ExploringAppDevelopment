@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TamaMossy.Models
 {
     interface IDataStore<T>
     {
-        bool CreateItem(T item);
+        Task<bool> CreateItem(T item);
 
-        T ReadItem();
+        Task<T> ReadItem();
 
-        bool UpdateItem(T item);
+        Task<bool> UpdateItem(T item);
 
-        bool DeleteItem(T item);
+        Task<bool> DeleteItem(T item);
     }
 }
