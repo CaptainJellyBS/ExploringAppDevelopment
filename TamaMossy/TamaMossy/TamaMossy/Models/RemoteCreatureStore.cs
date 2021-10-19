@@ -42,7 +42,24 @@ namespace TamaMossy.Models
 
 		public async Task<bool> DeleteItem(CreatureData item)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				var response = await client.DeleteAsync("https://tamagotchi.hku.nl/api/Creatures" + Preferences.Get("ID", 0));
+				if (response.IsSuccessStatusCode)
+				{
+					Preferences.Set("ID", 0);
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (HttpRequestException e)
+			{
+				return false;
+			}
+			
 		}
 
 		public async Task<CreatureData> ReadItem()
@@ -53,7 +70,7 @@ namespace TamaMossy.Models
 				return null;
 			}
 
-			var response = await client.GetAsync("https://tamagotchi.hku.nl/api/Creatures/2");
+			var response = await client.GetAsync("https://tamagotchi.hku.nl/api/Creatures/" + Preferences.Get("ID", 0));
 			if (response.IsSuccessStatusCode)
 			{
 				string creatureAsText = await response.Content.ReadAsStringAsync();
@@ -70,7 +87,31 @@ namespace TamaMossy.Models
 
 		public async Task<bool> UpdateItem(CreatureData item)
 		{
-			throw new NotImplementedException();
+			string creatureAsText = JsonConvert.SerializeObject(item);
+
+			try
+			{
+				var response = await client.PutAsync("https://tamagotchi.hku.nl/api/Creatures/" + Preferences.Get("ID",0), new StringContent(creatureAsText, Encoding.UTF8, "application/json"));
+				if (response.IsSuccessStatusCode)
+				{
+					string postedCreatureAsText = await response.Content.ReadAsStringAsync();
+
+					CreatureData postedCreature = JsonConvert.DeserializeObject<CreatureData>(postedCreatureAsText);
+
+					if(Preferences.Get("ID", 0) != postedCreature.ID) { Console.WriteLine("YOU JUST FUCKED UP BIG TIME"); }
+					//Preferences.Set("ID", postedCreature.ID);
+
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (HttpRequestException e)
+			{
+				return false;
+			}
 		}
 	}
 }

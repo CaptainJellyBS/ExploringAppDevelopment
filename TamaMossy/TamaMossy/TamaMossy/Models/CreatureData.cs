@@ -8,7 +8,7 @@ namespace TamaMossy.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string PlayerName { get; set; }
+        public string UserName { get; set; }
         public float Hunger { get; set; }
         public float Thirst { get; set; }
         public float Loneliness { get; set; }

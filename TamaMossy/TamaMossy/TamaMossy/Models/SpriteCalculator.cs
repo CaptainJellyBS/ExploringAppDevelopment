@@ -16,7 +16,7 @@ namespace TamaMossy.Models
         public static string CalculateAnimationPath()
         {
             //This feels like YandereDev code and I don't know how to make it better ;_;
-            if(App.CurState.isAsleep)
+            if(App.CurState.IsAsleep)
             {
                 App.CurState.GenerateNewIdleAnimation();
                 return "sleep_anim_large.gif";

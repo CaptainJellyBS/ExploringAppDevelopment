@@ -18,9 +18,10 @@ namespace TamaMossy.Models
 {
     public class CurrentState
     {
-        public bool isAsleep, isInPark;
+        public bool IsAsleep { get; set; }
+        public bool IsInPark { get; set; }
         public int idleAnimation;
-        public string name;
+        public string Name { get; set; }
 
         #region ugly state enum getter setter headache
         FoodState currentFoodState;
@@ -64,43 +65,6 @@ namespace TamaMossy.Models
 
 
         #endregion
-        public static CurrentState ParseFromString(string input)
-        {
-            CurrentState result = new CurrentState();
-            try
-            {
-                string[] inputs = input.Split(' ');
-                result.CurrentFoodState = (FoodState)Int32.Parse(inputs[0]);
-                result.CurrentDrinkState = (DrinkState)Int32.Parse(inputs[1]);
-                result.CurrentSocialState = (SocialState)Int32.Parse(inputs[2]);
-                result.CurrentEnergyState = (EnergyState)Int32.Parse(inputs[3]);
-                result.CurrentBoredState = (BoredState)Int32.Parse(inputs[4]);
-                result.isAsleep = Int32.Parse(inputs[5]) == 1;
-                result.GenerateNewIdleAnimation();
-                return result; 
-            }
-            catch
-            {
-                Console.WriteLine("Tried to parse a current_state file that does not have the correct format. Returned default state instead");
-                return new CurrentState();
-            }
-        }
-
-        public string ParseToString()
-        {
-            string result = string.Empty;
-
-            result += (int)CurrentFoodState; result += " ";
-            result += (int)CurrentDrinkState; result += " ";
-            result += (int)CurrentSocialState; result += " ";
-            result += (int)CurrentEnergyState; result += " ";
-            result += (int)CurrentBoredState; result += " ";
-            int t = 0;
-            if (isAsleep) { t = 1; }
-            result += t; result += " ";
-
-            return result;
-        }
 
         public void GenerateNewIdleAnimation()
         {
@@ -113,8 +77,8 @@ namespace TamaMossy.Models
             return new CreatureData()
             {
                 ID = Preferences.Get("ID", 0),
-                PlayerName = Preferences.Get("PlayerName", "PLACEHOLDER"),
-                Name = name,
+                UserName = Preferences.Get("PlayerName", "PLACEHOLDER"),
+                Name = Name,
                 Hunger = Utility.FoodToFloat(CurrentFoodState),
                 Thirst = Utility.DrinkToFloat(CurrentDrinkState),
                 Stimulated = Utility.SocialToFloat(CurrentSocialState),
@@ -128,7 +92,7 @@ namespace TamaMossy.Models
         { 
             return new CurrentState()
             {
-                name = data.Name,
+                Name = data.Name,
                 CurrentFoodState = Utility.FoodFromFloat(data.Hunger),
                 CurrentDrinkState = Utility.DrinkFromFloat(data.Thirst),
                 CurrentSocialState = Utility.SocialFromFloat(data.Stimulated),

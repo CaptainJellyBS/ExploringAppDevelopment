@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace TamaMossy.Models
 {
@@ -10,7 +11,7 @@ namespace TamaMossy.Models
     {
         public Task<bool> CreateItem(CreatureData item)
         {
-            string creature = JsonConvert.SerializeObject(item);
+            string creature = JsonConvert.SerializeObject(item);            
             return Task.FromResult(false);
         }
 
