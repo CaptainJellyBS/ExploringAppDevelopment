@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Timers;
 using TamaMossy.Models;
+using TamaMossy.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -20,22 +21,26 @@ namespace TamaMossy
         public App()
         {
             InitializeComponent();
-            LoadState(); //Putting this in just the OnStart and OnResume made the app crash :/
-            CurState.GenerateNewIdleAnimation(); //Kinda same as the above, MainPage would be loaded before the idle animation was generated
 
             remoteStore = new RemoteCreatureStore();
-            MainPage = new AppShell();
+            LoadState(); //Putting this in just the OnStart and OnResume made the app crash :/
+
+            CurState.GenerateNewIdleAnimation(); //Kinda same as the above, MainPage would be loaded before the idle animation was generated
+
+
+            MainPage = new NavigationPage(new MainPage());
 
             notificationManager = DependencyService.Get<INotificationManager>();
 
             notificationManager.StartAlarmCycle();
+
         }
 
         protected override void OnStart()
         {
             LoadState();
             alarmManager = AlarmManager.LoadAlarms();
-            timer = new Timer { AutoReset = true, Interval = 1000 * 60 };
+            timer = new Timer { AutoReset = true, Interval = 1000 * 60 * 15 };
 
             timer.Elapsed += TimerElapsed;
             timer.Start();
@@ -58,14 +63,14 @@ namespace TamaMossy
             CurState.GenerateNewIdleAnimation();
             alarmManager = AlarmManager.LoadAlarms();
 
-            timer = new Timer { AutoReset = true, Interval = 1000 * 60 };
+            timer = new Timer { AutoReset = true, Interval = 1000 * 60 /* *15 */};
             timer.Elapsed += TimerElapsed;
             timer.Start();
         }
 
         void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            alarmManager.UpdateTimers();
+            UpdateAlarms();
         }
 
         public static void LoadState()

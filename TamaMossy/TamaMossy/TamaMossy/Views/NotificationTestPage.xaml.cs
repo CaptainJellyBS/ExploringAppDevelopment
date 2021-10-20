@@ -34,7 +34,7 @@ namespace TamaMossy.Views
             notificationNumber++;
             string title = $"Local Notification #{notificationNumber}";
             string message = $"You have now received {notificationNumber} notifications!";
-            notificationManager.SendNotification(title, message);
+            notificationManager.SendNotification(new NotificationEventArgs() { Title = title, Message = message });
         }
 
         void OnScheduleClick(object sender, EventArgs e)
@@ -42,7 +42,7 @@ namespace TamaMossy.Views
             notificationNumber++;
             string title = $"Local Notification #{notificationNumber}";
             string message = $"You have now received {notificationNumber} notifications!";
-            notificationManager.SendNotification(title, message, DateTime.Now.AddSeconds(10));
+            notificationManager.SendNotification(new NotificationEventArgs() { Title = title, Message = message }, DateTime.Now.AddSeconds(10));
         }
 
         void ShowNotification(string title, string message)

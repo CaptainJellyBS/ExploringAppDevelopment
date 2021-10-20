@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TamaMossy.Views.GamesPages.TicTacToePage"
+             BackgroundColor="Gray">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="320"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding MossImage}" IsAnimationPlaying="True" HorizontalOptions="Center"/>
+            <BoxView Color="DimGray" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+
+            <Button Grid.Row ="1" Grid.Column ="0" Text=" " Clicked="OnTilePressed" x:Name="LT" VerticalOptions="Center" FontSize="Large"/>
+            <Button Grid.Row ="1" Grid.Column ="1" Text=" " Clicked="OnTilePressed" x:Name="CT" VerticalOptions="Center" FontSize="Large"/>
+            <Button Grid.Row ="1" Grid.Column ="2" Text=" " Clicked="OnTilePressed" x:Name="RT" VerticalOptions="Center" FontSize="Large"/>
+
+            <Button Grid.Row ="2" Grid.Column ="0" Text=" " Clicked="OnTilePressed" x:Name="LC" VerticalOptions="Center" FontSize="Large"/>
+            <Button Grid.Row ="2" Grid.Column ="1" Text=" " Clicked="OnTilePressed" x:Name="CC" VerticalOptions="Center" FontSize="Large"/>
+            <Button Grid.Row ="2" Grid.Column ="2" Text=" " Clicked="OnTilePressed" x:Name="RC" VerticalOptions="Center" FontSize="Large"/>
+
+            <Button Grid.Row ="3" Grid.Column ="0" Text=" " Clicked="OnTilePressed" x:Name="LB" VerticalOptions="Center" FontSize="Large"/>
+            <Button Grid.Row ="3" Grid.Column ="1" Text=" " Clicked="OnTilePressed" x:Name="CB" VerticalOptions="Center" FontSize="Large"/>
+            <Button Grid.Row ="3" Grid.Column ="2" Text=" " Clicked="OnTilePressed" x:Name="RB" VerticalOptions="Center" FontSize="Large"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

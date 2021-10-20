@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace TamaMossy.Models
 {
@@ -18,11 +19,6 @@ namespace TamaMossy.Models
         public DateTime BoredAlarm { get; set; }
         Random r = new Random();
 
-        public AlarmManager()
-        {
-            //Code that loads timers from json file here
-        }
-
         public void UpdateTimers()
         {
 
@@ -35,34 +31,41 @@ namespace TamaMossy.Models
             UpdateEnergyAlarm();
             UpdateBoredAlarm();
             SaveAlarms();
+
             App.SaveState();
         }
 
         private void UpdateFoodAlarm()
         {
-            if(FoodAlarm == null) { FoodAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5)); }
+            if(FoodAlarm == null) { FoodAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); }
             while(FoodAlarm < DateTime.Now)
             {
+                if(App.CurState.CurrentFoodState == FoodState.Starving) { FoodAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); break; }
                 App.CurState.CurrentFoodState--;
-                if(App.CurState.CurrentFoodState == FoodState.Starving) { FoodAlarm = DateTime.Now.AddHours(RandomDouble(1.2, 2.5)); break; }
-                FoodAlarm = FoodAlarm.AddHours(RandomDouble(1.5,2.5));
+
+                DependencyService.Get<INotificationManager>().SendNotification
+                    (NotificationCalculator.CalculateFoodNotification(App.CurState.CurrentFoodState));
+                FoodAlarm = FoodAlarm.AddHours(RandomDouble(2.0, 3.5));
             }
         }
 
         private void UpdateDrinkAlarm()
         {
-            if (DrinkAlarm == null) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5)); }
+            if (DrinkAlarm == null) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); }
             while (DrinkAlarm < DateTime.Now)
             {
-                App.CurState.CurrentDrinkState--;
                 if (App.CurState.CurrentDrinkState == DrinkState.Dehydrated) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(1.2, 2.5)); break; }
-                DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(1.5, 2.5));
+                App.CurState.CurrentDrinkState--;
+
+                DependencyService.Get<INotificationManager>().SendNotification
+                    (NotificationCalculator.CalculateDrinkNotification(App.CurState.CurrentDrinkState));
+                DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(2.0, 3.5));
             }
         }
 
         private void UpdateSocialAlarm()
         {
-            if (SocialAlarm == null) { SocialAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5)); }
+            if (SocialAlarm == null) { SocialAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); }
             while (SocialAlarm < DateTime.Now)
             {
                 if (!App.CurState.IsAsleep) //While asleep, the creature's social state does not change
@@ -70,55 +73,67 @@ namespace TamaMossy.Models
                     if (App.CurState.IsInPark)
                     {
                         //TODO: Rewrite the timer to take into account the amount of other creatures in the park
+                        if(App.CurState.CurrentSocialState == SocialState.Panicking) { SocialAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); return; }
                         App.CurState.CurrentSocialState++;
-                        if(App.CurState.CurrentSocialState == SocialState.Panicking) { SocialAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5)); return; }
                     }
                     else
                     {
+                        if (App.CurState.CurrentSocialState == SocialState.Forlorn) { SocialAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); return; }
                         App.CurState.CurrentSocialState--;
-                        if (App.CurState.CurrentSocialState == SocialState.Forlorn) { SocialAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5)); return; }
                     }
-                    SocialAlarm = SocialAlarm.AddHours(RandomDouble(1.5, 2.5));
+                    SocialAlarm = SocialAlarm.AddHours(RandomDouble(2.0, 3.5));
+
+                    DependencyService.Get<INotificationManager>().SendNotification
+                        (NotificationCalculator.CalculateSocialNotification(App.CurState.CurrentSocialState));
                 }
                 else 
                 { 
-                    SocialAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5));
+                    SocialAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5));
                 }
             }
         }
 
         private void UpdateEnergyAlarm()
         {
-            if (EnergyAlarm == null) { EnergyAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.0)); }
+            if (EnergyAlarm == null) { EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); }
             while (EnergyAlarm < DateTime.Now)
             {
                 if (App.CurState.IsAsleep)
                 {
-                    App.CurState.CurrentEnergyState+=2;
-                    if(App.CurState.CurrentEnergyState == EnergyState.Energized)
+                    if (App.CurState.CurrentEnergyState == EnergyState.Energized)
                     {
-                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.0)); return;
+                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); return;
                     }
+
+                    App.CurState.CurrentEnergyState+=2;
                 }
                 else
                 {
-                    App.CurState.CurrentEnergyState--;
                     if (App.CurState.CurrentEnergyState == EnergyState.Exhausted)
                     {
-                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.0)); return;
+                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); return;
                     }
+
+                    App.CurState.CurrentEnergyState--;                    
                 }
-                EnergyAlarm = EnergyAlarm.AddHours(RandomDouble(2.0, 3.0));
+                EnergyAlarm = EnergyAlarm.AddHours(RandomDouble(3.0, 4.0));
+
+                DependencyService.Get<INotificationManager>().SendNotification
+                    (NotificationCalculator.CalculateEnergyNotification(App.CurState.CurrentEnergyState));
             }
         }
 
         private void UpdateBoredAlarm()
         {
-            if(BoredAlarm == null) { BoredAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 5.0)); }
+            if(BoredAlarm == null) { BoredAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0)); }
             if(BoredAlarm < DateTime.Now)
             {
-                if (!App.CurState.IsAsleep) { App.CurState.CurrentBoredState = BoredState.Bored; } //Creature doesn't get bored while asleep
+                //Creature doesn't get bored while asleep or in park
+                if (!App.CurState.IsAsleep && !App.CurState.IsInPark) { App.CurState.CurrentBoredState = BoredState.Bored; } 
                 BoredAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 5.0));
+
+                DependencyService.Get<INotificationManager>().SendNotification
+                    (NotificationCalculator.CalculateBoredNotification(App.CurState.CurrentBoredState));
             }
         }
 
@@ -208,6 +223,13 @@ namespace TamaMossy.Models
             }
 
             return r.NextDouble() <= threshold;
+        }
+
+        public void ResetBoredTimer()
+        {
+            BoredAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0));
+            SaveAlarms();
+            App.SaveState();
         }
 
     }

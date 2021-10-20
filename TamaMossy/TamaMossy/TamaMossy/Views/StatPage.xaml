@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TamaMossy.Views.StatPage"
              BackgroundColor="Gray">
+
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -16,24 +17,28 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
+            <BoxView Color="LightGray" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
+            
             <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding MossImage}" IsAnimationPlaying="True" HorizontalOptions="Center"/>
-            <Label Grid.Row="1" Grid.Column="0" x:Name="foodText" Text="{Binding food}"/>
-            <Label Grid.Row="2" Grid.Column="0" x:Name="drinkText" Text="{Binding drink}"/>
-            <Label Grid.Row="3" Grid.Column="0" x:Name="socialText" Text="{Binding social}"/>
-            <Label Grid.Row="4" Grid.Column="0" x:Name="energyText" Text="{Binding energy}"/>
-            <Label Grid.Row="5" Grid.Column="0" x:Name="boredText" Text="{Binding bored}"/>
-            <Button Grid.Row ="1" Grid.Column ="1" Text="Decrease" Clicked="OnFoodDecreaseClicked"/>
-            <Button Grid.Row ="2" Grid.Column ="1" Text="Decrease" Clicked="OnDrinkDecreaseClicked"/>
-            <Button Grid.Row ="3" Grid.Column ="1" Text="Decrease" Clicked="OnSocialDecreaseClicked"/>
-            <Button Grid.Row ="4" Grid.Column ="1" Text="Decrease" Clicked="OnEnergyDecreaseClicked"/>
-            <Button Grid.Row ="5" Grid.Column ="1" Text="Decrease" Clicked="OnBoredDecreaseClicked"/> 
-            <Button Grid.Row ="1" Grid.Column ="2" Text="Increase" Clicked="OnFoodIncreaseClicked"/>
-            <Button Grid.Row ="2" Grid.Column ="2" Text="Increase" Clicked="OnDrinkIncreaseClicked"/>
-            <Button Grid.Row ="3" Grid.Column ="2" Text="Increase" Clicked="OnSocialIncreaseClicked"/>
-            <Button Grid.Row ="4" Grid.Column ="2" Text="Increase" Clicked="OnEnergyIncreaseClicked"/>
-            <Button Grid.Row ="5" Grid.Column ="2" Text="Increase" Clicked="OnBoredIncreaseClicked"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Hunger" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="Thirst" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="3" Grid.Column="0" Text="Social" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="4" Grid.Column="0" Text="Energy" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="5" Grid.Column="0" Text="Activity" FontSize="Medium" VerticalOptions="Center"/>
+
+            <Label Grid.Row="1" Grid.Column="1" x:Name="foodText" Text="{Binding food}" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="2" Grid.Column="1" x:Name="drinkText" Text="{Binding drink}" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="3" Grid.Column="1" x:Name="socialText" Text="{Binding social}" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="4" Grid.Column="1" x:Name="energyText" Text="{Binding energy}" FontSize="Medium" VerticalOptions="Center"/>
+            <Label Grid.Row="5" Grid.Column="1" x:Name="boredText" Text="{Binding bored}" FontSize="Medium" VerticalOptions="Center"/>
+
+            <Button Grid.Row ="1" Grid.Column ="2" Text="{Binding kitchenButtonText}" Clicked="OnKitchenClicked" VerticalOptions="Center"/>
+            <Button Grid.Row ="2" Grid.Column ="2" Text="{Binding kitchenButtonText}" Clicked="OnKitchenClicked" VerticalOptions="Center"/>
+            <Button Grid.Row ="3" Grid.Column ="2" Text="To Park" Clicked="OnParkClicked" VerticalOptions="Center"/>
+            <Button Grid.Row ="4" Grid.Column ="2" Text="To Bedroom" Clicked="OnBedClicked" VerticalOptions="Center"/>
+            <Button Grid.Row ="5" Grid.Column ="2" Text="{Binding gamesButtonText}" Clicked="OnGamesClicked" VerticalOptions="Center"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

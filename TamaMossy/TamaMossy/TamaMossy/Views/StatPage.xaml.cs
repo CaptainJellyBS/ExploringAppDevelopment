@@ -1,7 +1,11 @@
 ﻿using System;
-using System.IO;
-using Xamarin.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TamaMossy.Models;
+using TamaMossy.Views.NeedsPages;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace TamaMossy.Views
@@ -19,10 +23,13 @@ namespace TamaMossy.Views
         public string social { get; set; }
         public string bored { get; set; }
 
+        public string kitchenButtonText { get; set; }
+        public string gamesButtonText { get; set; }
+
         public StatPage()
         {
             BindingContext = this;
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         protected override void OnAppearing()
@@ -31,115 +38,55 @@ namespace TamaMossy.Views
 
             curState = App.CurState;
             food = curState.CurrentFoodState.ToString().Replace('_', ' ');
-            foodText.Text = food; 
-            drink = curState.CurrentDrinkState.ToString().Replace('_', ' ');
-            drinkText.Text = drink;
-            energy = curState.CurrentEnergyState.ToString().Replace('_', ' ');
-            energyText.Text = energy;
-            social = curState.CurrentSocialState.ToString().Replace('_', ' ');
-            socialText.Text = social;
-            bored = curState.CurrentBoredState.ToString().Replace('_', ' ');
-            boredText.Text = bored;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-        }
-        
-        void OnFoodIncreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentFoodState++;
-            App.SaveState();
-            food = curState.CurrentFoodState.ToString().Replace('_', ' ');
             foodText.Text = food;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnFoodDecreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentFoodState--;
-            App.SaveState();
-            food = curState.CurrentFoodState.ToString().Replace('_', ' ');
-            foodText.Text = food;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnDrinkIncreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentDrinkState++;
-            App.SaveState();
             drink = curState.CurrentDrinkState.ToString().Replace('_', ' ');
             drinkText.Text = drink;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnDrinkDecreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentDrinkState--;
-            App.SaveState();
-            drink = curState.CurrentDrinkState.ToString().Replace('_', ' ');
-            drinkText.Text = drink;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnEnergyIncreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentEnergyState++;
-            App.SaveState();
             energy = curState.CurrentEnergyState.ToString().Replace('_', ' ');
             energyText.Text = energy;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnEnergyDecreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentEnergyState--;
-            App.SaveState();
-            energy = curState.CurrentEnergyState.ToString().Replace('_', ' ');
-            energyText.Text = energy;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnSocialIncreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentSocialState++;
-            App.SaveState();
             social = curState.CurrentSocialState.ToString().Replace('_', ' ');
             socialText.Text = social;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnSocialDecreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentSocialState--;
-            App.SaveState();
-            social = curState.CurrentSocialState.ToString().Replace('_', ' ');
-            socialText.Text = social;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
-
-        }
-
-        void OnBoredIncreaseClicked(object sender, EventArgs args)
-        {
-            curState.CurrentBoredState++;
-            App.SaveState();
             bored = curState.CurrentBoredState.ToString().Replace('_', ' ');
             boredText.Text = bored;
             MossImage = SpriteCalculator.CalculateAnimationPath();
 
+            UpdateButtons();
         }
 
-        void OnBoredDecreaseClicked(object sender, EventArgs args)
+        void OnKitchenClicked(object sender, EventArgs e)
         {
-            curState.CurrentBoredState--;
-            App.SaveState();
-            bored = curState.CurrentBoredState.ToString().Replace('_', ' ');
-            boredText.Text = bored;
-            MossImage = SpriteCalculator.CalculateAnimationPath();
+            UpdateButtons();
+            if (!curState.IsAsleep) { Navigation.PushAsync(new KitchenPage()); }
+        }
+
+        void OnGamesClicked(object sender, EventArgs e)
+        {
+            UpdateButtons();
+            if (!curState.IsAsleep) { Navigation.PushAsync(new GamesPage()); }            
+        }
+
+        void OnParkClicked(object sender, EventArgs e)
+        {
+            (sender as Button).Text = "Parks have not been implemented yet";
+        }
+
+        void OnBedClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new BedPage());
+
+        }
+
+        void UpdateButtons()
+        {
+            if (curState.IsAsleep)
+            {
+                kitchenButtonText = curState.Name + " is asleep";
+                gamesButtonText = curState.Name + " is asleep";
+            }
+            else
+            {
+                kitchenButtonText = "To Kitchen";
+                gamesButtonText = "To Games";
+            }
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TamaMossy.Views.NeedsPages.KitchenPage"
+            BackgroundColor="Gray">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="320"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Source="{Binding MossImage}" IsAnimationPlaying="True" HorizontalOptions="Center"/>
+
+                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="2" Color="LightGray"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="Hunger:" FontSize="Medium" VerticalOptions="Center"/>
+                <Label Grid.Row="1" Grid.Column="2" Text="Thirst:" FontSize="Medium" VerticalOptions="Center"/>
+                <Label Grid.Row="1" Grid.Column="1" x:Name="foodText" Text="{Binding Food}" FontSize="Medium" VerticalOptions="Center"/>
+                <Label Grid.Row="1" Grid.Column="3" x:Name="drinkText" Text="{Binding Drink}" FontSize="Medium" VerticalOptions="Center"/>
+                
+                <Button Grid.Row ="2" Grid.Column ="0" Grid.ColumnSpan="2" Text="Give Dirt" Clicked="OnFeedClicked" VerticalOptions="Center"/>
+                <Button Grid.Row ="2" Grid.Column ="2" Grid.ColumnSpan="2" Text="Give Drink" Clicked="OnDrinkClicked" VerticalOptions="Center"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

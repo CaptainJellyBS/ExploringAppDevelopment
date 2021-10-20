@@ -26,8 +26,9 @@ namespace TamaMossy.Droid.Models
                 string message = intent.GetStringExtra(AndroidNotificationManager.MessageKey);
 
                 AndroidNotificationManager manager = AndroidNotificationManager.Instance ?? new AndroidNotificationManager();
-                //manager.Show(title, message);
-                manager.Show(NotificationCalculator.CalculateNotification());
+                App.UpdateAlarms();
+                //manager.Show(new NotificationEventArgs() { Title = title , Message = message});
+                //manager.Show(NotificationCalculator.CalculateNotification());
             }
         }
     }

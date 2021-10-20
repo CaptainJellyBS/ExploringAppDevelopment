@@ -3,48 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-
+using TamaMossy.Models;
+using TamaMossy.Views.GamesPages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using TamaMossy.Models;
 
-namespace TamaMossy.Views
+namespace TamaMossy.Views.NeedsPages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class GamesPage : ContentPage
     {
         string mossImage;
         public string MossImage { get { return mossImage; } set { if (mossImage != value) { mossImage = value; OnPropertyChanged("MossImage"); } } }
 
-        public MainPage()
+        public GamesPage()
         {
             BindingContext = this;
-
             InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            BindingContext = this;
+            
             MossImage = SpriteCalculator.CalculateAnimationPath();
-        }
 
-        void DebugStatsButtonClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new DEBUGStatPage());
         }
-
-        void StatsButtonClicked(object sender, EventArgs e)
+        void OnTicTacToeClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new StatPage());
-        }
+            Navigation.PushAsync(new TicTacToePage());
 
-        void TestNotiPage(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new NotificationTestPage());
         }
     }
 }

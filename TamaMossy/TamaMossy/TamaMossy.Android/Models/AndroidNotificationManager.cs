@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Media;
 using Android.OS;
 using Android.Support.V4.App;
 using TamaMossy.Models;
@@ -44,8 +45,12 @@ namespace TamaMossy.Droid.Models
             }
         }
 
-        public void SendNotification(string title, string message, DateTime? notifyTime = null)
+        public void SendNotification(NotificationEventArgs args, DateTime? notifyTime = null)
         {
+            if(args == null) { return; }
+            string title = args.Title;
+            string message = args.Message;
+
             if (!channelInitialized)
             {
                 CreateNotificationChannel();
@@ -60,12 +65,11 @@ namespace TamaMossy.Droid.Models
                 PendingIntent pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId++, intent, PendingIntentFlags.CancelCurrent);
                 long triggerTime = GetNotifyTime(notifyTime.Value);
                 AlarmManager alarmManager = AndroidApp.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-                //alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
-                alarmManager.SetInexactRepeating(AlarmType.RtcWakeup, 10000, 10000, pendingIntent);
+                alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
             }
             else
             {
-                Show(NotificationCalculator.CalculateNotification()); 
+                Show(args); 
             }
         }
 
@@ -82,7 +86,6 @@ namespace TamaMossy.Droid.Models
 
                 PendingIntent pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId++, intent, PendingIntentFlags.CancelCurrent);
                 AlarmManager alarmManager = AndroidApp.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-                //alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
                 alarmManager.SetInexactRepeating(AlarmType.RtcWakeup, 900000, 900000, pendingIntent);
         }
 
@@ -96,11 +99,10 @@ namespace TamaMossy.Droid.Models
             NotificationReceived?.Invoke(null, args);
         }
 
-        //public void Show(string title, string message)
         public void Show(NotificationEventArgs args)
         {
-            App.UpdateAlarms();
             if(args == null) { return; }
+
             string title = args.Title;
             string message = args.Message;
             Intent intent = new Intent(AndroidApp.Context, typeof(MainActivity));
@@ -124,6 +126,12 @@ namespace TamaMossy.Droid.Models
         void CreateNotificationChannel()
         {
             manager = (NotificationManager)AndroidApp.Context.GetSystemService(AndroidApp.NotificationService);
+            Android.Net.Uri alarmUri = Android.Net.Uri.Parse(ContentResolver.SchemeAndroidResource+ "://" + AndroidApp.Context.PackageName + "/" + Resource.Raw.frogNotification);
+
+
+            var alarmAttributes = new AudioAttributes.Builder()
+               .SetContentType(AudioContentType.Sonification)
+               .SetUsage(AudioUsageKind.Notification).Build();
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
@@ -132,6 +140,8 @@ namespace TamaMossy.Droid.Models
                 {
                     Description = channelDescription
                 };
+                channel.SetSound(alarmUri, alarmAttributes);
+                
                 manager.CreateNotificationChannel(channel);
             }
 

@@ -9,7 +9,8 @@ namespace TamaMossy.Models
     {
         event EventHandler NotificationReceived;
         void Initialize();
-        void SendNotification(string title, string message, DateTime? notifyTime = null);
+        //void SendNotification(string title, string message, DateTime? notifyTime = null);
+        void SendNotification(NotificationEventArgs args, DateTime? notifyTime = null);
         void ReceiveNotification(string title, string message);
         void StartAlarmCycle();
 

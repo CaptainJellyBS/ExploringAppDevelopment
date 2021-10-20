@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TamaMossy.Views.NeedsPages.GamesPage"
+             BackgroundColor="Gray">
+    <ContentPage.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="320"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <BoxView Color="LightGray" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+
+                <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="{Binding MossImage}" IsAnimationPlaying="True" HorizontalOptions="Center"/>
+                
+                <Button Grid.Row ="1" Grid.Column ="0" Text="Tic Tac Toe" Clicked="OnTicTacToeClicked" VerticalOptions="Center"/>
+            </Grid>
+    </ContentPage.Content>
+</ContentPage>

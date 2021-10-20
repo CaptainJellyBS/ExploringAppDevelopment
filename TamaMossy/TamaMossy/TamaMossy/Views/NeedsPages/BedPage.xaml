@@ -1,15 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TamaMossy.Views.MainPage"
+             x:Class="TamaMossy.Views.NeedsPages.BedPage"
              BackgroundColor="Gray">
     <ContentPage.Content>
         <StackLayout>
-            <!--<Image Source="idle_anim_2_large.gif"  IsAnimationPlaying = "True"/>-->
             <Image Source="{Binding MossImage}" IsAnimationPlaying="True" HeightRequest="320"/>
-            <Button Text="Stats" Clicked="StatsButtonClicked"/>
-            <Button Text="DEBUG Stats" Clicked="DebugStatsButtonClicked"/>
-            <Button Text="DEBUG Notifications" Clicked="TestNotiPage"/>
+            <Button Text="{Binding ButtonText}" Clicked="ClickToggle"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
