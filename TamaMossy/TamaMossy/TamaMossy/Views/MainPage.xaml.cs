@@ -45,23 +45,31 @@ namespace TamaMossy.Views
 
         async Task Init()
         {
-            await App.LoadState();
+            bool hasName = await App.LoadState();
 
             App.CurState.GenerateNewIdleAnimation(); //Kinda same as the above, MainPage would be loaded before the idle animation was generated
+
+
+            alarmManager = AlarmManager.LoadAlarms();            
+
+            if(!hasName)
+            {
+                alarmManager.TimerInitialize();
+                alarmManager.SaveAlarms();
+
+                Device.BeginInvokeOnMainThread(async () => await Navigation.PushAsync(new NamesPage()));
+                hasName = true;
+            }
 
             notificationManager = DependencyService.Get<INotificationManager>();
 
             notificationManager.StartAlarmCycle();
 
-            alarmManager = AlarmManager.LoadAlarms();
             timer = new Timer { AutoReset = true, Interval = 1000 * 60 * 15 };
 
             timer.Elapsed += TimerElapsed;
             timer.Start();
 
-            //Debug Stuff, remove later
-            Preferences.Set("PlayerName", "Mana TEST PLACEHOLDER");
-            App.CurState.Name = "TAMAMOSSY TEST PLACEHOLDER";
         }
         void TimerElapsed(object sender, ElapsedEventArgs e)
         {

@@ -48,24 +48,33 @@ namespace TamaMossy
             //timer.Start();
         }
 
-        public async static Task LoadState()
+        public async static Task<bool> LoadState()
         {
             CreatureData cd = await remoteStore.ReadItem();
             if (cd != null)
             {
                 CurState = CurrentState.FromCreatureData(cd);
+                return true;
             }
             else
             {
 
                 if (!Preferences.ContainsKey("CurrentState"))
                 {
-                    CurState = new CurrentState();
+                    CurState = new CurrentState()
+                    {
+                        CurrentBoredState = BoredState.Satisfied,
+                        CurrentDrinkState = DrinkState.Could_Drink,
+                        CurrentEnergyState = EnergyState.Energized,
+                        CurrentFoodState = FoodState.Peckish,
+                        CurrentSocialState = SocialState.Fine
+                    };
                     Console.WriteLine("Made new stats file because none existed");
-                    SaveState();
-                    return;
+                    
+                    return false;
                 }
                 CurState = JsonConvert.DeserializeObject<CurrentState>(Preferences.Get("CurrentState", null));
+                return true;
             }
 
         }

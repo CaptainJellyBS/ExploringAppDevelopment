@@ -19,6 +19,15 @@ namespace TamaMossy.Models
         public DateTime BoredAlarm { get; set; }
         Random r = new Random();
 
+        public void TimerInitialize()
+        {
+            FoodAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5));
+            DrinkAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5));
+            SocialAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5));
+            EnergyAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0));
+            BoredAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0));
+        }
+
         public void UpdateTimers()
         {
             
