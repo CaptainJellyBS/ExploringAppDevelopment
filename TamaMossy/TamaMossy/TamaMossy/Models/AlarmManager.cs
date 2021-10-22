@@ -21,17 +21,18 @@ namespace TamaMossy.Models
 
         public void UpdateTimers()
         {
-
-            if(App.CurState.IsAsleep) { App.CurState.IsAsleep = !ShouldIWakeUp(); }
-            else { App.CurState.IsAsleep = ShouldIPassOut(); }
             
             UpdateFoodAlarm();
             UpdateDrinkAlarm();
             UpdateSocialAlarm();
             UpdateEnergyAlarm();
             UpdateBoredAlarm();
-            SaveAlarms();
 
+
+            if (App.CurState.IsAsleep) { App.CurState.IsAsleep = !ShouldIWakeUp(); }
+            else { App.CurState.IsAsleep = ShouldIPassOut(); }
+
+            SaveAlarms();
             App.SaveState();
         }
 
@@ -46,7 +47,7 @@ namespace TamaMossy.Models
                 DependencyService.Get<INotificationManager>().SendNotification
                     (NotificationCalculator.CalculateFoodNotification(App.CurState.CurrentFoodState));
                 FoodAlarm = FoodAlarm.AddHours(RandomDouble(2.0, 3.5));
-                if (App.CurState.IsAsleep) { FoodAlarm = FoodAlarm.AddHours(RandomDouble(0.5, 1.5)); } //Get thirstier slower when asleep
+                if (App.CurState.IsAsleep) { FoodAlarm = FoodAlarm.AddHours(RandomDouble(0.5, 2.5)); } //Get thirstier slower when asleep
 
             }
         }
@@ -62,7 +63,7 @@ namespace TamaMossy.Models
                 DependencyService.Get<INotificationManager>().SendNotification
                     (NotificationCalculator.CalculateDrinkNotification(App.CurState.CurrentDrinkState));
                 DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(2.0, 3.5));
-                if (App.CurState.IsAsleep) { DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(0.5, 1.5)); } //Get thirstier slower when asleep
+                if (App.CurState.IsAsleep) { DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(0.5, 2.5)); } //Get thirstier slower when asleep
             }
         }
 
@@ -98,28 +99,28 @@ namespace TamaMossy.Models
 
         private void UpdateEnergyAlarm()
         {
-            if (EnergyAlarm == null) { EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); }
+            if (EnergyAlarm == null) { EnergyAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0)); }
             while (EnergyAlarm < DateTime.Now)
             {
                 if (App.CurState.IsAsleep)
                 {
                     if (App.CurState.CurrentEnergyState == EnergyState.Energized)
                     {
-                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); return;
+                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0)); return;
                     }
 
-                    App.CurState.CurrentEnergyState++;
+                    App.CurState.CurrentEnergyState+=2;
                 }
                 else
                 {
                     if (App.CurState.CurrentEnergyState == EnergyState.Exhausted)
                     {
-                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); return;
+                        EnergyAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0)); return;
                     }
 
                     App.CurState.CurrentEnergyState--;                    
                 }
-                EnergyAlarm = EnergyAlarm.AddHours(RandomDouble(3.0, 4.0));
+                EnergyAlarm = EnergyAlarm.AddHours(RandomDouble(4.0, 6.0));
 
                 DependencyService.Get<INotificationManager>().SendNotification
                     (NotificationCalculator.CalculateEnergyNotification(App.CurState.CurrentEnergyState));
@@ -166,27 +167,26 @@ namespace TamaMossy.Models
             //Set a base depending on how tired we are
             switch (App.CurState.CurrentEnergyState)
             {
-                case EnergyState.Fine: threshold += 0.05f; break;
                 case EnergyState.Rested: threshold += 0.1f; break;
                 case EnergyState.Energized: threshold += 0.65f; break;
                 case EnergyState.Exhausted: threshold -= 0.35f; break;
-                case EnergyState.Tired: threshold -= 0.1f; break;
+                case EnergyState.Tired: threshold -= 0.15f; break;
                 default: break; 
             }
 
             //Modify the threshold depending on hunger and thirst. When hungry or thirsty, have a higher chance of waking up.
             switch (App.CurState.CurrentDrinkState)
             {
-                case DrinkState.Thirsty: threshold += 0.1f; break;
-                case DrinkState.Dehydrated: threshold += 0.2f; break;
+                case DrinkState.Thirsty: threshold += 0.025f; break;
+                case DrinkState.Dehydrated: threshold += 0.1f; break;
                 default: break;
             }
 
             switch (App.CurState.CurrentFoodState)
             {
-                case FoodState.Hungry: threshold += 0.05f; break;
-                case FoodState.Very_Hungry: threshold += 0.15f; break;
-                case FoodState.Starving: threshold += 0.2f; break;
+                case FoodState.Hungry: threshold += 0.01f; break;
+                case FoodState.Very_Hungry: threshold += 0.05f; break;
+                case FoodState.Starving: threshold += 0.15f; break;
                 default: break;
             }
 
