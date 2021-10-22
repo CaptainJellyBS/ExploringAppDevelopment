@@ -54,6 +54,13 @@ namespace TamaMossy
             if (cd != null)
             {
                 CurState = CurrentState.FromCreatureData(cd);
+
+                //This fixes an issue that wouldn't exist if the people who programmed xamarin Entry fields had any sort of functioning brain
+                if (CurState.Name != Preferences.Get("Name", "PLACEHOLDER"))
+                {
+                    CurState.Name = Preferences.Get("Name", "PLACEHOLDER II");
+                }
+
                 return true;
             }
             else
@@ -67,7 +74,7 @@ namespace TamaMossy
                         CurrentDrinkState = DrinkState.Could_Drink,
                         CurrentEnergyState = EnergyState.Energized,
                         CurrentFoodState = FoodState.Peckish,
-                        CurrentSocialState = SocialState.Fine
+                        CurrentSocialState = SocialState.Fine,
                     };
                     Console.WriteLine("Made new stats file because none existed");
                     

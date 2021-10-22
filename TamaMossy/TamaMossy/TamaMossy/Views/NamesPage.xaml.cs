@@ -31,11 +31,12 @@ namespace TamaMossy.Views
 
         protected override void OnDisappearing()
         {
-            base.OnDisappearing();
-
             //Because the text completed event is not fired when closing the keyboard with the back button (why Xamarin? WHY?), do this
             Preferences.Set("PlayerName", UsernameEntry.Text);
+            Preferences.Set("Name", NameEntry.Text);
             App.CurState.Name = NameEntry.Text;
+
+            base.OnDisappearing();
         }
 
         void OnUsernameCompleted(object sender, EventArgs e)
