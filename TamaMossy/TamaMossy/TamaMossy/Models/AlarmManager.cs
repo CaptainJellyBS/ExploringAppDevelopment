@@ -46,6 +46,8 @@ namespace TamaMossy.Models
                 DependencyService.Get<INotificationManager>().SendNotification
                     (NotificationCalculator.CalculateFoodNotification(App.CurState.CurrentFoodState));
                 FoodAlarm = FoodAlarm.AddHours(RandomDouble(2.0, 3.5));
+                if (App.CurState.IsAsleep) { FoodAlarm = FoodAlarm.AddHours(RandomDouble(0.5, 1.5)); } //Get thirstier slower when asleep
+
             }
         }
 
@@ -54,12 +56,13 @@ namespace TamaMossy.Models
             if (DrinkAlarm == null) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); }
             while (DrinkAlarm < DateTime.Now)
             {
-                if (App.CurState.CurrentDrinkState == DrinkState.Dehydrated) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(1.2, 2.5)); break; }
+                if (App.CurState.CurrentDrinkState == DrinkState.Dehydrated) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); break; }
                 App.CurState.CurrentDrinkState--;
 
                 DependencyService.Get<INotificationManager>().SendNotification
                     (NotificationCalculator.CalculateDrinkNotification(App.CurState.CurrentDrinkState));
                 DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(2.0, 3.5));
+                if (App.CurState.IsAsleep) { DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(0.5, 1.5)); } //Get thirstier slower when asleep
             }
         }
 
@@ -105,7 +108,7 @@ namespace TamaMossy.Models
                         EnergyAlarm = DateTime.Now.AddHours(RandomDouble(3.0, 4.0)); return;
                     }
 
-                    App.CurState.CurrentEnergyState+=2;
+                    App.CurState.CurrentEnergyState++;
                 }
                 else
                 {
@@ -164,7 +167,7 @@ namespace TamaMossy.Models
             switch (App.CurState.CurrentEnergyState)
             {
                 case EnergyState.Fine: threshold += 0.05f; break;
-                case EnergyState.Rested: threshold += 0.25f; break;
+                case EnergyState.Rested: threshold += 0.1f; break;
                 case EnergyState.Energized: threshold += 0.65f; break;
                 case EnergyState.Exhausted: threshold -= 0.35f; break;
                 case EnergyState.Tired: threshold -= 0.1f; break;
@@ -183,7 +186,7 @@ namespace TamaMossy.Models
             {
                 case FoodState.Hungry: threshold += 0.05f; break;
                 case FoodState.Very_Hungry: threshold += 0.15f; break;
-                case FoodState.Starving: threshold += 0.3f; break;
+                case FoodState.Starving: threshold += 0.2f; break;
                 default: break;
             }
 
@@ -198,8 +201,8 @@ namespace TamaMossy.Models
             //Set a base depending on how tired we are
             switch(App.CurState.CurrentEnergyState)
             {
-                case EnergyState.Tired: threshold += 0.1f; break;
-                case EnergyState.Exhausted: threshold += 0.5f; break;
+                case EnergyState.Tired: threshold += 0.05f; break;
+                case EnergyState.Exhausted: threshold += 0.4f; break;
                 default: return false; //Never pass out when not tired
             }
 
@@ -214,7 +217,7 @@ namespace TamaMossy.Models
 
             switch(App.CurState.CurrentFoodState)
             {
-                case FoodState.Stuffed: threshold += 0.2f; break;
+                case FoodState.Stuffed: threshold += 0.15f; break;
                 case FoodState.Full: threshold += 0.1f; break;
                 case FoodState.Hungry: threshold -= 0.05f; break;
                 case FoodState.Very_Hungry: threshold -= 0.15f; break;

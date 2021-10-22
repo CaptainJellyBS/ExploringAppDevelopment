@@ -89,7 +89,7 @@ namespace TamaMossy.Models
         }
 
         public static CurrentState FromCreatureData(CreatureData data)
-        { 
+        {
             return new CurrentState()
             {
                 Name = data.Name,
@@ -97,7 +97,10 @@ namespace TamaMossy.Models
                 CurrentDrinkState = Utility.DrinkFromFloat(data.Thirst),
                 CurrentSocialState = Utility.SocialFromFloat(data.Stimulated),
                 CurrentEnergyState = Utility.EnergyFromFloat(data.Tired),
-                CurrentBoredState = Utility.BoredFromFloat(data.Boredom)
+                CurrentBoredState = Utility.BoredFromFloat(data.Boredom),
+
+                IsAsleep = JsonConvert.DeserializeObject<CurrentState>(Preferences.Get("CurrentState", null)).IsAsleep, //Curse this shit
+                IsInPark = JsonConvert.DeserializeObject<CurrentState>(Preferences.Get("CurrentState", null)).IsInPark //Curse this too. Possibly temporary
             };
         }
     }

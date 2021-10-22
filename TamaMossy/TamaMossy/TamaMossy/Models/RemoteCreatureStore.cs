@@ -70,19 +70,26 @@ namespace TamaMossy.Models
 				return null;
 			}
 
-			var response = await client.GetAsync("https://tamagotchi.hku.nl/api/Creatures/" + Preferences.Get("ID", 0));
-			if (response.IsSuccessStatusCode)
+			try
 			{
-				string creatureAsText = await response.Content.ReadAsStringAsync();
+				var response = await client.GetAsync("https://tamagotchi.hku.nl/api/creatures/" + creatureID);
+				if (response.IsSuccessStatusCode)
+				{
+					string creatureAsText = await response.Content.ReadAsStringAsync();
 
-				CreatureData creature = JsonConvert.DeserializeObject<CreatureData>(creatureAsText);
+					CreatureData creature = JsonConvert.DeserializeObject<CreatureData>(creatureAsText);
 
-				Preferences.Set("ID", creature.ID);
+					Preferences.Set("ID", creature.ID);
 
-				return creature;
+					return creature;
+				}
+
+				return null;
 			}
-
-			return null;
+			catch(Exception e)
+            {
+				return null;
+            }
 		}
 
 		public async Task<bool> UpdateItem(CreatureData item)
