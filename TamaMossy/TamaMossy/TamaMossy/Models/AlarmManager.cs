@@ -206,6 +206,7 @@ namespace TamaMossy.Models
         bool ShouldIPassOut()
         {
             float threshold = 0.0f;
+            if (App.CurState.IsInPark) { return false; } //Never pass out while in the park.
             
             //Set a base depending on how tired we are
             switch(App.CurState.CurrentEnergyState)

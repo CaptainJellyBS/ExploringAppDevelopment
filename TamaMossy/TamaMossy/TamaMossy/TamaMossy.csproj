@@ -40,7 +40,7 @@
     <EmbeddedResource Update="Views\NotificationTestPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ParkBasePage.xaml">
+    <EmbeddedResource Update="Views\ParkListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ParkPage.xaml">

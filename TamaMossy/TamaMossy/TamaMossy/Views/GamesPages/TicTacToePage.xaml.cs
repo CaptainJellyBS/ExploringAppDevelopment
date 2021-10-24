@@ -193,6 +193,7 @@ namespace TamaMossy.Views.GamesPages
             AlarmManager am = AlarmManager.LoadAlarms();
             am.ResetBoredTimer();
             App.CurState.CurrentBoredState = BoredState.Satisfied;
+            App.SaveState();
         }
 
         string TileSymbol(int i)

@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace TamaMossy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ParkBasePage : TabbedPage
+    public partial class ParkListPage : ContentPage
     {
-        public ParkBasePage()
+        public ParkListPage()
         {
             InitializeComponent();
         }

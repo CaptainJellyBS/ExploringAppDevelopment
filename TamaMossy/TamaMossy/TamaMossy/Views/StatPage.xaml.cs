@@ -66,7 +66,8 @@ namespace TamaMossy.Views
 
         void OnParkClicked(object sender, EventArgs e)
         {
-            (sender as Button).Text = "Parks have not been implemented yet";
+            //(sender as Button).Text = "Parks have not been implemented yet";
+            Navigation.PushAsync(new ParkPage());
         }
 
         void OnBedClicked(object sender, EventArgs e)
