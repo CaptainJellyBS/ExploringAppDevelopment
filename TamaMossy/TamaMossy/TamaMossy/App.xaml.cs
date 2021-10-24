@@ -97,5 +97,11 @@ namespace TamaMossy
             am.UpdateTimers();
         }
 
+        public static void DEBUGSetAlarmsToTenSecondsAgo()
+        {
+            AlarmManager am = AlarmManager.LoadAlarms();
+            am.DEBUGSetAlarmsToTenSecondsAgo();
+        }
+
     }
 }

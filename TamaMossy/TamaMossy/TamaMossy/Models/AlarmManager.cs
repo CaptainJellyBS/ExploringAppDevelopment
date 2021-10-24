@@ -308,5 +308,16 @@ namespace TamaMossy.Models
             Preferences.Set("Friends", JsonConvert.SerializeObject(friendsList));
         }
 
+        public void DEBUGSetAlarmsToTenSecondsAgo()
+        {
+            FoodAlarm = DateTime.Now.AddSeconds(-10);
+            DrinkAlarm = DateTime.Now.AddSeconds(-10);
+            SocialAlarm = DateTime.Now.AddSeconds(-10);
+            EnergyAlarm = DateTime.Now.AddSeconds(-10);
+            BoredAlarm = DateTime.Now.AddSeconds(-10);
+
+            SaveAlarms();
+        }
+
     }
 }

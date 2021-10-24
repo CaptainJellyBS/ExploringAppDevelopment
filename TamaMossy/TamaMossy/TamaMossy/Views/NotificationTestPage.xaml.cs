@@ -39,6 +39,7 @@ namespace TamaMossy.Views
 
         void OnScheduleClick(object sender, EventArgs e)
         {
+            App.DEBUGSetAlarmsToTenSecondsAgo();
             App.UpdateAlarms();
         }
 
