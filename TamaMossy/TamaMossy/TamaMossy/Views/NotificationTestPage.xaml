@@ -7,7 +7,7 @@
     <ContentPage.Content>
         <StackLayout Margin="0,35,0,0"
              x:Name="stackLayout">
-            <Label Text="Click the button below to create a local notification."
+            <Label Text="Click the button below to create a local test notification."
            TextColor="Red"
            HorizontalOptions="Center"
            VerticalOptions="Start" />
@@ -15,7 +15,7 @@
             HorizontalOptions="Center"
             VerticalOptions="Start"
             Clicked="OnSendClick" />
-            <Label Text="Click the button below to schedule a local notification for in 10 seconds time."
+            <Label Text="Click the button below to schedule a local notification as if the event went off"
            TextColor="Red"
            HorizontalOptions="Center"
            VerticalOptions="Start" />

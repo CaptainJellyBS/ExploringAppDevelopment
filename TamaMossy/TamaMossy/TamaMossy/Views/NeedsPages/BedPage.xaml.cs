@@ -57,8 +57,9 @@ namespace TamaMossy.Views.NeedsPages
                     MossImage = "mossy_sleep_gotosleep_large.gif";
                     App.CurState.IsAsleep = true;
                 }
-            }            
+            }
 
+            App.SaveState();
             t.Start();
         }
 
