@@ -63,7 +63,7 @@ namespace TamaMossy.Models
 
         private void UpdateDrinkAlarm()
         {
-            if (DrinkAlarm == null) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); }
+            if (DrinkAlarm == null) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(1.5, 2.5)); }
             while (DrinkAlarm < DateTime.Now)
             {
                 if (App.CurState.CurrentDrinkState == DrinkState.Dehydrated) { DrinkAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 3.5)); break; }
@@ -72,7 +72,7 @@ namespace TamaMossy.Models
                 DependencyService.Get<INotificationManager>().SendNotification
                     (NotificationCalculator.CalculateDrinkNotification(App.CurState.CurrentDrinkState));
                 DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(2.0, 3.5));
-                if (App.CurState.IsAsleep) { DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(0.5, 2.5)); } //Get thirstier slower when asleep
+                if (App.CurState.IsAsleep) { DrinkAlarm = DrinkAlarm.AddHours(RandomDouble(1.5, 2.5)); } //Get thirstier slower when asleep
             }
         }
 
@@ -138,7 +138,7 @@ namespace TamaMossy.Models
 
         private void UpdateBoredAlarm()
         {
-            if(BoredAlarm == null) { BoredAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0)); }
+            if(BoredAlarm == null) { BoredAlarm = DateTime.Now.AddHours(RandomDouble(2.0, 5.0)); }
             if(BoredAlarm < DateTime.Now)
             {
                 //Creature doesn't get bored while asleep or in park
