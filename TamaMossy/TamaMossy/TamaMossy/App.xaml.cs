@@ -33,19 +33,11 @@ namespace TamaMossy
 
         protected override void OnSleep()
         {
-           // timer.Stop();
             SaveState();
         }
 
         protected override void OnResume()
         {
-            ////await LoadState();
-            //CurState.GenerateNewIdleAnimation();
-            //alarmManager = AlarmManager.LoadAlarms();
-
-            //timer = new Timer { AutoReset = true, Interval = 1000 * 60 * 15 };
-            //timer.Elapsed += TimerElapsed;
-            //timer.Start();
         }
 
         public async static Task<bool> LoadState()

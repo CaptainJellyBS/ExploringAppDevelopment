@@ -47,9 +47,7 @@ namespace TamaMossy.Views
         {
             bool hasName = await App.LoadState();
 
-            App.CurState.GenerateNewIdleAnimation(); //Kinda same as the above, MainPage would be loaded before the idle animation was generated
-
-
+            App.CurState.GenerateNewIdleAnimation(); 
             alarmManager = AlarmManager.LoadAlarms();            
 
             if(!hasName)
@@ -93,6 +91,11 @@ namespace TamaMossy.Views
             if (!loaded) { return; }
 
             Navigation.PushAsync(new NotificationTestPage());
+        }
+
+        void ParkPageClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ParkPage());
         }
     }
 }

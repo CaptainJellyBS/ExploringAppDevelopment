@@ -127,7 +127,7 @@ namespace TamaMossy.Views
 
             for (int i = currentIndex; i < Math.Min(currentIndex + 10, creaturesInPark.Count); i++)
             {
-                if(creaturesInPark[i].Creature.ID == Preferences.Get("ID", 0)) { continue; } //Don't add a button for ourselves
+                //if(creaturesInPark[i].Creature.ID == Preferences.Get("ID", 0)) { continue; } //Don't add a button for ourselves
                 
                 Button b = new Button
                 {
@@ -154,7 +154,14 @@ namespace TamaMossy.Views
                 {
                     CurrentSelectedCreatureName.Text = creaturesInPark[currentShown].Creature.Name;
                     CurrentSelectedCreatureUserName.Text = creaturesInPark[currentShown].Creature.UserName;
-                    CurrentSelectedCreatureFriendship.Text = FriendshipToText(friendsList[creaturesInPark[currentShown].Creature.ID]);
+                    if (creaturesInPark[currentShown].Creature.ID == Preferences.Get("ID", 0))
+                    {
+                        CurrentSelectedCreatureFriendship.Text = "This is me!";
+                    }
+                    else
+                    {
+                        CurrentSelectedCreatureFriendship.Text = FriendshipToText(friendsList[creaturesInPark[currentShown].Creature.ID]);
+                    }
                 }
                 else
                 {

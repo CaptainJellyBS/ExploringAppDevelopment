@@ -8,8 +8,9 @@
             <!--<Image Source="idle_anim_2_large.gif"  IsAnimationPlaying = "True"/>-->
             <Image Source="{Binding MossImage}" IsAnimationPlaying="True" HeightRequest="320"/>
             <Button Text="Stats" Clicked="StatsButtonClicked"/>
-            <Button Text="DEBUG Stats" Clicked="DebugStatsButtonClicked"/>
-            <Button Text="DEBUG Notifications" Clicked="TestNotiPage"/>
+            <Button Text="Park" Clicked="ParkPageClicked" />
+            <!--<Button Text="DEBUG Stats" Clicked="DebugStatsButtonClicked"/> --> <!-- Uncomment to be able to change stats at will -->
+            <!-- <Button Text="DEBUG Notifications" Clicked="TestNotiPage"/> --> <!-- Uncomment to test Push notifications -->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
