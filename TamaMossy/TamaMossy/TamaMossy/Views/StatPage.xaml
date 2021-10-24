@@ -37,7 +37,7 @@
             <Button Grid.Row ="1" Grid.Column ="2" Text="{Binding kitchenButtonText}" Clicked="OnKitchenClicked" VerticalOptions="Center"/>
             <Button Grid.Row ="2" Grid.Column ="2" Text="{Binding kitchenButtonText}" Clicked="OnKitchenClicked" VerticalOptions="Center"/>
             <Button Grid.Row ="3" Grid.Column ="2" Text="To Park" Clicked="OnParkClicked" VerticalOptions="Center"/>
-            <Button Grid.Row ="4" Grid.Column ="2" Text="To Bedroom" Clicked="OnBedClicked" VerticalOptions="Center"/>
+            <Button Grid.Row ="4" Grid.Column ="2" Text="{Binding bedButtonText}" Clicked="OnBedClicked" VerticalOptions="Center"/>
             <Button Grid.Row ="5" Grid.Column ="2" Text="{Binding gamesButtonText}" Clicked="OnGamesClicked" VerticalOptions="Center"/>
         </Grid>
     </ContentPage.Content>

@@ -36,7 +36,7 @@ namespace TamaMossy.Models
             UpdateSocialAlarm();
             UpdateEnergyAlarm();
             UpdateBoredAlarm();
-
+            UpdateFriendsList();
 
             if (App.CurState.IsAsleep) { App.CurState.IsAsleep = !ShouldIWakeUp(); }
             else { App.CurState.IsAsleep = ShouldIPassOut(); }
@@ -243,6 +243,69 @@ namespace TamaMossy.Models
             BoredAlarm = DateTime.Now.AddHours(RandomDouble(4.0, 6.0));
             SaveAlarms();
             App.SaveState();
+        }
+
+        async void UpdateFriendsList()
+        {
+            if (!App.CurState.IsInPark) { return; }
+
+            PlaygroundDataStore playground = new PlaygroundDataStore();
+            List<PlaygroundEntry> creaturesInPark = await playground.ReadAllItems();
+
+            if(creaturesInPark == null) { return; }
+
+            Dictionary<int, float> friendsList = LoadFriendslist();
+
+            foreach (PlaygroundEntry p in creaturesInPark)
+            {
+                if(friendsList.ContainsKey(p.Creature.ID))
+                {
+                    friendsList[p.Creature.ID] += GenerateFriendshipChange(friendsList[p.Creature.ID]/10);
+                }
+                else
+                {
+                    friendsList.Add(p.Creature.ID, 0.0f);
+                }
+            }
+
+            SaveFriendsList(friendsList);
+        }
+
+        float GenerateFriendshipChange(float mod)
+        {
+            float result = (float)r.NextDouble();
+            result += Math.Max(-0.5f, Math.Min(mod,0.75f));
+            result -= 0.05f; //Base chance of positive change is way higher than chance of negative change
+
+            //Change result based on current state. If needy, the chance of a bad change to the relationship is somewhat higher.
+            if(App.CurState.CurrentFoodState == FoodState.Starving) { result -= 0.05f; }
+            if(App.CurState.CurrentFoodState == FoodState.Very_Hungry) { result -= 0.01f; }
+
+            if(App.CurState.CurrentDrinkState == DrinkState.Dehydrated) { result -= 0.025f; }
+
+            if(App.CurState.CurrentEnergyState == EnergyState.Tired) { result -= 0.025f; }
+            if(App.CurState.CurrentEnergyState == EnergyState.Exhausted) { result -= 0.1f; }
+
+            //The social state has a comparatively huge effect, rather than small changes to the chance
+            if(App.CurState.CurrentSocialState == SocialState.Overstimulated) { result -= 0.1f; }
+            if(App.CurState.CurrentSocialState == SocialState.Panicking) { result -= 0.25f; }
+
+            result /= 10.0f; //We don't want friendship to increase too fast, since this is called every 15ish minutes.
+            return result;
+        }
+
+        Dictionary<int, float> LoadFriendslist()
+        {
+            Dictionary<int, float> friendsList;
+            if (!Preferences.ContainsKey("Friends")) { friendsList = new Dictionary<int, float>(); SaveFriendsList(friendsList); }
+
+            else { friendsList = JsonConvert.DeserializeObject<Dictionary<int, float>>(Preferences.Get("Friends", null)); };
+            return friendsList;
+        }
+
+        void SaveFriendsList(Dictionary<int, float> friendsList)
+        {
+            Preferences.Set("Friends", JsonConvert.SerializeObject(friendsList));
         }
 
     }

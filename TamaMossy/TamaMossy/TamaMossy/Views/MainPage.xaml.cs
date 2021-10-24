@@ -66,7 +66,6 @@ namespace TamaMossy.Views
             notificationManager.StartAlarmCycle();
 
             timer = new Timer { AutoReset = true, Interval = 1000 * 60 * 15 };
-
             timer.Elapsed += TimerElapsed;
             timer.Start();
 

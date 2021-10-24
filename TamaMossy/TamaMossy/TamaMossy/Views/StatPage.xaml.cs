@@ -25,6 +25,7 @@ namespace TamaMossy.Views
 
         public string kitchenButtonText { get; set; }
         public string gamesButtonText { get; set; }
+        public string bedButtonText { get; set; }
 
         public StatPage()
         {
@@ -66,18 +67,31 @@ namespace TamaMossy.Views
 
         void OnParkClicked(object sender, EventArgs e)
         {
+            UpdateButtons();
             //(sender as Button).Text = "Parks have not been implemented yet";
             Navigation.PushAsync(new ParkPage());
         }
 
         void OnBedClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new BedPage());
+            UpdateButtons();
+
+            if (!curState.IsInPark) { Navigation.PushAsync(new BedPage()); }
 
         }
 
         void UpdateButtons()
         {
+            if(curState.IsInPark)
+            {
+                bedButtonText = curState.Name + " is in the park";
+            }
+            else
+            {
+                bedButtonText = "To Bedroom";
+
+            }
+
             if (curState.IsAsleep)
             {
                 kitchenButtonText = curState.Name + " is asleep";
@@ -88,6 +102,7 @@ namespace TamaMossy.Views
                 kitchenButtonText = "To Kitchen";
                 gamesButtonText = "To Games";
             }
+
         }
     }
 }

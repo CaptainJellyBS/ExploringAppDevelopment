@@ -1,10 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TamaMossy.Views.ParkPage">
+             x:Class="TamaMossy.Views.ParkPage"
+             BackgroundColor="Gray">
     <ContentPage.Content>
-        <StackLayout>
-            <Button Text="{Binding ButtonText}" Clicked="OnParkButtonClicked" />
-        </StackLayout>
+        <Grid x:Name="PageGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/> <!-- To/From park button-->
+                <RowDefinition Height="*"/> <!-- Label-->
+                <RowDefinition Height="*"/> <!-- Up button-->
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/> <!-- Down button-->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="9" Color="LightGray" />
+            <BoxView Grid.Row="0" Grid.Column="1" Grid.RowSpan="5" Color="LightGray"/>
+            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="4" Source="{Binding MossImage}" IsAnimationPlaying="True" HorizontalOptions="Start"/>
+            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="5" Color="LightGray" x:Name="InfoBox"/>
+            
+            <!--Text for selected creature-->
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="Large" HorizontalOptions="Center" x:Name="CurrentSelectedCreatureName" FontAttributes="Bold" TextColor="Black"/>
+            <Label Grid.Row="1" Grid.Column="0" FontSize="Large" HorizontalOptions="End" x:Name="OwnerText" Text="Owner:   "/>
+            <Label Grid.Row="1" Grid.Column="1" FontSize="Large" HorizontalOptions="Start" x:Name="CurrentSelectedCreatureUserName" Text="Placeholder"/>
+            <Label Grid.Row="2" Grid.Column="0" FontSize="Large" HorizontalOptions="End" x:Name="RelationshipText" Text="Relationship:   "/>
+            <Label Grid.Row="2" Grid.Column="1" FontSize="Large" HorizontalOptions="Start" x:Name="CurrentSelectedCreatureFriendship" Text="Placeholder"/>
+
+
+            <Button Grid.Row ="4" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ButtonText}" Clicked="OnParkButtonClicked" FontSize="Medium"/>
+            <Label Grid.Row ="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Creatures in park" FontSize="Medium" HorizontalOptions="Center"/>
+            
+            <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="▲" FontSize="Large" HorizontalOptions="Center" x:Name="UpButton" Clicked="OnButtonUpClicked"/>
+            <Button Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Text="▼" FontSize="Large" HorizontalOptions="Center" x:Name="DownButton" Clicked="OnButtonDownClicked"/>
+            
+            
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
